@@ -1,5 +1,5 @@
 from utils.functions_new import  fed_avg,batch_data_new, get_masked_model_chatgpt, SimpleMLP, save_file,  open_file, batch_data, set_model_weights, get_cropped_model_chatgpt, group_gradient, group_hessian_new, norm_grad
-from utils.mnist_data_generator import mnist_shuffle_data
+from utils.mnist_data_generator import*
 from utils.math_function import weight_scalling_factor,fed_avg_weight,scale_model_weights,sum_scaled_weights,weight_std_dev_median
 import tensorflow as tf
 import numpy as np
@@ -12,9 +12,9 @@ np.random.seed(37)
 random.seed(5)
 tf.random.set_seed(8)
 
-# # file_name = "../Dataset100_clean_mnist.pkl"
-# Dataset= open_file(file_name)
-Dataset= mnist_shuffle_data(client_percent=.3, data_percent=1,num_clients=100)
+file_name = "../Dataset0.3_1_100_flip_mnist.pkl"
+Dataset= open_file(file_name)
+# Dataset= mnist_flip_data(client_percent=.3, data_percent=1,num_clients=100)
 
 #process and batch the training data for each client
 clients= Dataset[0]
@@ -93,12 +93,14 @@ for i in range(epochs):
         for a in randomlist:
             model.set_weights(global_weight)
             local_score = model.evaluate(clients_batched[client_names[a]], verbose=0)
+            print('Evaluation loss: ',local_score[0])
             if i % 10 == 0 and i > 0:
                 score1 = model.evaluate(clients_batched_test[client_names[a]], verbose=1)
                 model1_accuracy.append(score1[1])
                 model1_loss.append(score1[0])
                 # val= global_mean-local_score[0]
-            if global_mean-global_standard_dev*2.5 <=local_score[0]<=global_mean+alpha*global_standard_dev:
+
+            if global_mean-max(global_standard_dev*2.5,.1) <=local_score[0]<=global_mean+alpha*global_standard_dev:
                 hist1 = model.fit(clients_batched[client_names[a]], epochs=1, verbose=1)
                 # if abs(local_score[0]-hist1.history['loss'][-1])<= beta*global_standard_dev:
 
@@ -122,7 +124,7 @@ for i in range(epochs):
         group1_loss.append(model1_loss)
         group1_train_accuracy.append(model1_train_accuracy)
         group1_train_loss.append(model1_train_loss)
-        global_mean, global_standard_dev= np.median(group1_train_loss[-1]), np.std(group1_train_loss[-1])
+        global_mean, global_standard_dev= np.mean(group1_train_loss[-1]), np.std(group1_train_loss[-1])
         print(f'mean is {global_mean} and Standard deviation {global_standard_dev}')
         weighted_value = fed_avg_weight(total_data)
         scaled_weight = list()

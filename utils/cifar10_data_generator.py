@@ -1,4 +1,4 @@
-from Code.utils.client_creation import create_client, creating_flipping_clients, creating_shuffling_clients,creating_noisy_clients_cifar10, creating_targetted_clients, creating_targetted_shuffling_clients, creating_targetted_flipping_clients
+from utils.client_creation import create_client, creating_flipping_clients, creating_shuffling_clients,creating_noisy_clients_cifar10, creating_targetted_clients, creating_targetted_shuffling_clients, creating_targetted_flipping_clients
 import tensorflow as tf
 import numpy as np
 import keras
