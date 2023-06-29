@@ -14,7 +14,7 @@ tf.random.set_seed(8)
 
 # file_name = "../Dataset0.3_1_100_flip_mnist.pkl"
 # Dataset= open_file(file_name)
-Dataset= mnist_flip_data(client_percent=.3, data_percent=1,num_clients=100)
+Dataset= mnist_noniid_flip_data(client_percent=.3, data_percent=1,num_clients=100)
 
 #process and batch the training data for each client
 clients= Dataset[0]
@@ -38,7 +38,7 @@ lr = 0.001
 alpha= 1
 beta=1
 batch_size = 32
-client_percent= .5
+client_percent= 1
 bla = SimpleMLP
 model = bla.build(784,1)
 model.compile(loss=loss,
@@ -59,6 +59,7 @@ global_weight_list=[]
 taken_client = []
 global_mean=0
 global_standard_dev=0
+bla=0
 
 for i in range(epochs):
     print("group 1 training")
@@ -73,7 +74,7 @@ for i in range(epochs):
     randomlist = random.sample(range(0, 100), math.ceil(100 * client_percent))
     taken_client.append(randomlist)
     total_data = []
-    if i<10:
+    if i<300:
         for a in randomlist:
             data_points = len(clients_batched[client_names[a]]) * batch_size
             total_data.append(data_points)
@@ -89,6 +90,8 @@ for i in range(epochs):
             model1_train_loss.append(hist1.history['loss'][-1])
             model1_weight.append(weight1)
             K.clear_session()
+
+
     else:
         for a in randomlist:
             model.set_weights(global_weight)
@@ -100,7 +103,7 @@ for i in range(epochs):
                 model1_loss.append(score1[0])
                 # val= global_mean-local_score[0]
 
-            if global_mean-max(global_standard_dev*2.5,.1) <=local_score[0]<=global_mean+alpha*global_standard_dev:
+            if global_mean-max(global_standard_dev*2.5,2.5*bla) <=local_score[0]<=global_mean+max(global_standard_dev*alpha,alpha*bla):
                 hist1 = model.fit(clients_batched[client_names[a]], epochs=1, verbose=1)
                 # if abs(local_score[0]-hist1.history['loss'][-1])<= beta*global_standard_dev:
 
@@ -117,7 +120,11 @@ for i in range(epochs):
                 fileter1_block.append(a)
                 print('blocked at filter1')
 
+    if i==10:
+        bla = np.std(model1_train_loss)
+        print('bla: ',bla)
 
+    print(model1_train_loss)
 
     if len(model1_train_accuracy)>0:
         group1_accuracy.append(model1_accuracy)
