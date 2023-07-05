@@ -29,7 +29,10 @@ for (client_name, data) in clients.items():
     clients_batched[client_name],clients_batched_test[client_name]= batch_data_new(data)
 
 #process and batch the test set
-bad_client= Dataset_flip[1]
+bad_client_flip= Dataset_flip[1]
+bad_client_shuffle= Dataset_shuffle[1]
+bad_client_noisy= Dataset_noisy[1]
+
 x_test= Dataset_flip[2]
 y_test= Dataset_flip[3]
 test_batched = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(len(y_test))
@@ -163,7 +166,7 @@ for i in range(epochs):
 
     if i%10==0 and i>0:
         global_weight_list.append(global_weight)
-        sample_list = [global_accuracy, global_loss, group1_accuracy, group1_loss, global_weight_list]
+        sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight_list, bad_client_flip, bad_client_shuffle, bad_client_flip]
         save_file_name= f'../data/fedavg Mnist flip shuffle noisy.pkl'
         save_file(save_file_name, sample_list)
 
