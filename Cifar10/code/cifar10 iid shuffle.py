@@ -1,5 +1,5 @@
-from utils.functions_new import  fed_avg,batch_data_new, get_masked_model_chatgpt, SimpleMLP, save_file,  open_file, batch_data, set_model_weights, get_cropped_model_chatgpt, group_gradient, group_hessian_new, norm_grad
-from utils.mnist_data_generator import*
+from utils.functions_new import *
+from utils.cifar10_data_generator import *
 from utils.math_function import weight_scalling_factor,fed_avg_weight,scale_model_weights,sum_scaled_weights,weight_std_dev_median
 import tensorflow as tf
 import numpy as np
@@ -12,48 +12,39 @@ np.random.seed(37)
 random.seed(5)
 tf.random.set_seed(8)
 
-# file_name = "../Dataset0.3_1_100_flip_mnist.pkl"
+# # file_name = "../Dataset100_clean_mnist.pkl"
 # Dataset= open_file(file_name)
-Dataset_flip= mnist_noniid_flip_data(client_percent=.3, data_percent=1,num_clients=100)
-Dataset_shuffle= mnist_noniid_shuffle_data(client_percent=.3, data_percent=1,num_clients=100)
-Dataset_noisy= mnist_noniid_noise_data(client_percent=.3, data_percent=1,num_clients=100)
+Dataset= cifar10_shuffle_data(client_percent=.3, data_percent=1,num_clients=100)
+bad_client_shuffle= Dataset[1]
 #process and batch the training data for each client
-clients= Dataset_flip[0]
-clients2= Dataset_shuffle[0]
-clients3=Dataset_noisy[0]
-clients.update(clients2)
-clients.update(clients3)
+clients= Dataset[0]
 clients_batched = dict()
 clients_batched_test = dict()
 for (client_name, data) in clients.items():
     clients_batched[client_name],clients_batched_test[client_name]= batch_data_new(data)
 
 #process and batch the test set
-bad_client_flip= Dataset_flip[1]
-bad_client_shuffle= Dataset_shuffle[1]
-bad_client_noisy= Dataset_noisy[1]
-
-x_test= Dataset_flip[2]
-y_test= Dataset_flip[3]
+bad_client= Dataset[1]
+x_test= Dataset[2]
+y_test= Dataset[3]
 test_batched = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(len(y_test))
 client_names = list(clients_batched.keys())
 
-print(client_names)
 
 loss = 'categorical_crossentropy'
 metrics = ['accuracy']
 epochs = 300
-lr = 0.001
+lr = 0.0001
 alpha= 1
 beta=1
 batch_size = 32
-client_percent= 1
-bla = SimpleMLP
-model = bla.build(784,1)
+client_percent= .5
+bla = SimpleMLP4
+model = bla.build(1)
 model.compile(loss=loss,
-              optimizer=tf.keras.optimizers.Adam(
-                  learning_rate=lr),
-              metrics=metrics)
+            optimizer=tf.keras.optimizers.Adam(
+            learning_rate=lr),
+            metrics=metrics)
 global_weight = model.get_weights()
 initial_weight = model.get_weights()
 
@@ -81,7 +72,7 @@ for i in range(epochs):
     fileter2_block=[]
 
     # randomlist = random.sample(range(0, 300), math.ceil(300 * client_percent))
-    randomlist= [i for i in range(300)]
+    randomlist= [i for i in range(100)]
     taken_client.append(randomlist)
     total_data = []
     if i<299:
@@ -170,7 +161,7 @@ for i in range(epochs):
 
     if i%10==0 and i>0:
         global_weight_list.append(global_weight)
-        sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight_list, bad_client_flip, bad_client_shuffle, bad_client_flip]
-        save_file_name= f'../data/fedavg Mnist flip shuffle noisy_train_test.pkl'
+        sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight_list,bad_client_shuffle]
+        save_file_name= f'../data/fedavg cifar10 iid shuffle.pkl'
         save_file(save_file_name, sample_list)
 

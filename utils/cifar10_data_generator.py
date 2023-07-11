@@ -20,11 +20,12 @@ def cifar10_shuffle_data(client_percent, data_percent, num_clients):    # Get th
     clients, bad_client = creating_shuffling_clients(dataset,client_names,client_percent, data_percent)
 
     sample_list=[clients, bad_client, x_test, y_test]
-    file_name = f"../../Data/cifar10/Dataset{client_percent}_{data_percent}_{num_clients}_shuffle_cifar10.pkl"
-
-    open_file = open(file_name, "wb")
-    pickle.dump(sample_list, open_file)
-    open_file.close()
+    # file_name = f"../../Data/cifar10/Dataset{client_percent}_{data_percent}_{num_clients}_shuffle_cifar10.pkl"
+    #
+    # open_file = open(file_name, "wb")
+    # pickle.dump(sample_list, open_file)
+    # open_file.close()
+    return sample_list
 
 def cifar10_flip_data(client_percent, data_percent, num_clients):    # Get the data.
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
@@ -47,11 +48,12 @@ def cifar10_flip_data(client_percent, data_percent, num_clients):    # Get the d
     clients, bad_client = creating_flipping_clients(dataset,client_names,client_percent, data_percent)
 
     sample_list=[clients, bad_client, x_test, y_test]
-    file_name = f"../../Data/cifar10/Dataset{client_percent}_{data_percent}_{num_clients}_flip_cifar10.pkl"
-
-    open_file = open(file_name, "wb")
-    pickle.dump(sample_list, open_file)
-    open_file.close()
+    # file_name = f"../../Data/cifar10/Dataset{client_percent}_{data_percent}_{num_clients}_flip_cifar10.pkl"
+    #
+    # open_file = open(file_name, "wb")
+    # pickle.dump(sample_list, open_file)
+    # open_file.close()
+    return sample_list
 
 def cifar10_noise_data(client_percent, data_percent, num_clients):    # Get the data.
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
@@ -94,11 +96,12 @@ def cifar10_noise_data(client_percent, data_percent, num_clients):    # Get the 
         clients, bad_client = creating_shuffling_clients(dataset, client_names, client_percent, data_percent)
 
         sample_list = [clients, bad_client, x_test, y_test]
-        file_name = f"../../Data/cifar10/Dataset{client_percent}_{data_percent}_{num_clients}_shuffle_cifar10.pkl"
-
-        open_file = open(file_name, "wb")
-        pickle.dump(sample_list, open_file)
-        open_file.close()
+        # file_name = f"../../Data/cifar10/Dataset{client_percent}_{data_percent}_{num_clients}_shuffle_cifar10.pkl"
+        #
+        # open_file = open(file_name, "wb")
+        # pickle.dump(sample_list, open_file)
+        # open_file.close()
+        return sample_list
 
 def cifar10_target_data(client_percent, data_percent, num_clients):    # Get the data.
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()

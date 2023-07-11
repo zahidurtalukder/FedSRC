@@ -3,9 +3,9 @@ from sklearn.metrics import accuracy_score
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Dense
-from keras.regularizers import L1L2
+from tensorflow.keras.regularizers import L1L2
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import pickle
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.layers import Embedding, GRU, Dense
