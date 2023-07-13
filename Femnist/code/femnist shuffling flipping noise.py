@@ -1,8 +1,9 @@
-from utils.functions_new import  fed_avg,batch_data_new, get_masked_model_chatgpt, SimpleMLP4, save_file,  open_file, batch_data, set_model_weights, get_cropped_model_chatgpt, group_gradient, group_hessian_new, norm_grad
-from utils.cifar10_data_generator import*
+from utils.functions_new import *
+from utils.cifar10_data_generator import *
 from utils.math_function import weight_scalling_factor,fed_avg_weight,scale_model_weights,sum_scaled_weights,weight_std_dev_median
 import tensorflow as tf
 import numpy as np
+from utils.client_creation import *
 import math
 # from tensorflow.keras import backend as K
 import random
@@ -12,48 +13,44 @@ np.random.seed(37)
 random.seed(5)
 tf.random.set_seed(8)
 
-# file_name = "../Dataset0.3_1_100_flip_mnist.pkl"
-# Dataset= open_file(file_name)
-Dataset_flip= cifar10_noniid_flip_data(client_percent=.3, data_percent=1,num_clients=100)
-Dataset_shuffle= cifar10_noniid_shuffle_data(client_percent=.3, data_percent=1,num_clients=100)
-Dataset_noisy= cifar10_noniid_noise_data(client_percent=.3, data_percent=1,num_clients=100)
-#process and batch the training data for each client
-clients= Dataset_flip[0]
-clients2= Dataset_shuffle[0]
-clients3=Dataset_noisy[0]
+num_clients=100
+
+file_name = "../Dataset_clean_3000.pkl"
+Dataset= open_file(file_name)
+keys_list = list(Dataset[0].keys())
+values_list = list(Dataset[0].values())
+clients, bad_client_shuffle = creating_shuffling_clients(values_list[:num_clients],keys_list[:num_clients],client_percent=.5, data_percent=1)
+clients2, bad_client_flip = creating_flipping_clients(values_list[100:num_clients+100],keys_list[100:num_clients+100],client_percent=.5, data_percent=1)
+clients3, bad_client_noise = creating_noisy_clients_mnist(values_list[200:num_clients+200],keys_list[200:num_clients+200],client_percent=.5, data_percent=1)
+
 clients.update(clients2)
 clients.update(clients3)
 clients_batched = dict()
-clients_batched_test = dict()
 for (client_name, data) in clients.items():
-    clients_batched[client_name],clients_batched_test[client_name]= batch_data_new(data)
+    clients_batched[client_name] = batch_data_femnist(data)
 
+file_name = "../Testset_3000.pkl"
+Testset_bla= open_file(file_name)
 #process and batch the test set
-bad_client_flip= Dataset_flip[1]
-bad_client_shuffle= Dataset_shuffle[1]
-bad_client_noisy= Dataset_noisy[1]
-
-x_test= Dataset_flip[2]
-y_test= Dataset_flip[3]
-test_batched = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(len(y_test))
+x_test= Testset_bla[0]
+y_test= Testset_bla[1]
+test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(len(y_test))
 client_names = list(clients_batched.keys())
 
-print(client_names)
-
-loss = 'categorical_crossentropy'
+loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 metrics = ['accuracy']
 epochs = 300
-lr = 0.0001
+lr = 0.001
 alpha= 1
 beta=1
 batch_size = 32
 client_percent= .5
-bla = SimpleMLP4
-model = bla.build(1)
+bla = SimpleMLP3
+model = bla.build(784,1)
 model.compile(loss=loss,
-            optimizer=tf.keras.optimizers.Adam(
-            learning_rate=lr),
-            metrics=metrics)
+              optimizer=tf.keras.optimizers.Adam(
+                  learning_rate=lr),
+              metrics=metrics)
 global_weight = model.get_weights()
 initial_weight = model.get_weights()
 
@@ -166,6 +163,7 @@ for i in range(epochs):
 
     if i%10==0 and i>0:
         global_weight_list.append(global_weight)
-        sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight_list,bad_client_shuffle,bad_client_flip,bad_client_noisy]
-        save_file_name= f'../data/fedsrc cifar10 shuffle flip noise.pkl'
+        sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight_list,bad_client_shuffle,bad_client_flip,bad_client_noise]
+        save_file_name= f'../data/fedsrc femnist shuffle flip noise.pkl'
         save_file(save_file_name, sample_list)
+

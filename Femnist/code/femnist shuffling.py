@@ -2,9 +2,10 @@ from utils.functions_new import *
 from utils.cifar10_data_generator import *
 from utils.math_function import weight_scalling_factor,fed_avg_weight,scale_model_weights,sum_scaled_weights,weight_std_dev_median
 import tensorflow as tf
+from utils.client_creation import *
 import numpy as np
 import math
-from tensorflow.keras import backend as K
+# from tensorflow.keras import backend as K
 import random
 import os
 os.environ['PYTHONHASHSEED'] = '0'
@@ -93,7 +94,7 @@ for i in range(epochs):
             model1_train_accuracy.append(hist1.history['accuracy'][-1])
             model1_train_loss.append(hist1.history['loss'][-1])
             model1_weight.append(weight1)
-            K.clear_session()
+            # K.clear_session()
 
 
     else:
@@ -120,7 +121,7 @@ for i in range(epochs):
                 data_points = len(clients_batched[client_names[a]]) * batch_size
                 total_data.append(data_points)
 
-                K.clear_session()
+                # K.clear_session()
 
             else:
                 fileter1_block.append(a)
