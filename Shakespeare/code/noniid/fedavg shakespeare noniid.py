@@ -101,7 +101,13 @@ for i in range(epochs):
     group1_loss.append(model1_loss)
     group1_train_accuracy.append(model1_train_accuracy)
     group1_train_loss.append(model1_train_loss)
-    global_weight = median(model1_weight)
+    weighted_value = fed_avg_weight(total_data)
+    scaled_weight = list()
+    for k in range(len(weighted_value)):
+        scaled_weight.append(scale_model_weights(model1_weight[k], weighted_value[k]))
+
+    # to get the average over all the local model, we simply take the sum of the scaled weights
+    global_weight = sum_scaled_weights(scaled_weight)
 
     model.set_weights(global_weight)
     model.evaluate(x_test, y_test)
@@ -114,6 +120,6 @@ for i in range(epochs):
 
     if i%10==0 and i>0:
         sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight, bad_client_flip, bad_client_shuffle, bad_client_flip, taken_client]
-        save_file_name= f'../../data/noniid/median femnist noniid.pkl'
+        save_file_name= f'../../data/noniid/fedavg femnist noniid.pkl'
         save_file(save_file_name, sample_list)
 
