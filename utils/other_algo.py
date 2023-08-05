@@ -3,6 +3,8 @@ import tensorflow as tf
 from tensorflow.keras.losses import CosineSimilarity
 from tensorflow.keras import backend as K
 import math
+import statistics
+import numpy as np
 def cosine_similarity(tensor1, tensor2):
     # Normalize the tensors
     tensor1_normalized = tf.nn.l2_normalize(tensor1, axis=-1)
@@ -99,4 +101,49 @@ def median(weight):
         final_weight.append(median_value)
 
     return final_weight
+
+def euclidean_distance(tensor1, tensor2):
+    # Normalize the tensors
+    tensor1_normalized = tf.nn.l2_normalize(tensor1, axis=-1)
+    tensor2_normalized = tf.nn.l2_normalize(tensor2, axis=-1)
+
+    # Calculate the cosine similarity
+    euclidean_distance = tf.norm(tensor1_normalized  - tensor2_normalized)
+
+    return euclidean_distance
+
+def model_euclidean_distance(weight1, weight2):
+    bla= 0
+    for i in range(len(weight1)):
+        bla+= euclidean_distance(weight1[i], weight2[i])
+    return bla
+
+
+def krum_new(weight_list, percent):
+    num_trim = math.ceil(len(weight_list) * percent)
+    bla = []
+
+    for i in range(len(weight_list)):
+        sla = []
+        for j in range(len(weight_list)):
+            sla.append(model_euclidean_distance(weight_list[i], weight_list[j]))
+        sorted_list = sorted(sla)
+
+        # Get the lowest 10 values
+        sla = sorted_list[:-num_trim]
+        bla.append(sum(sla))
+    print(min(bla))
+    return weight_list[bla.index(min(bla))]
+
+def fedasl(data, alpha, beta):
+    val= np.zeros(len(data))
+    for i in range(len(data)):
+        if abs(data[i] - statistics.median(data))<=statistics.stdev(data)*alpha:
+            val[i] = statistics.stdev(data)*beta
+        else:
+            val[i]= abs(data[i] - statistics.median(data))
+    weighted_value= np.zeros(len(data))
+    for j in range(len(val)):
+        weighted_value[j]= np.reciprocal(val[j])/np.sum(np.reciprocal(val))
+    return weighted_value, statistics.median(data),statistics.stdev(data)
 
