@@ -220,7 +220,7 @@ def cifar10_shuffle_data(client_percent, data_percent, num_clients):    # Get th
     x_test /= 255
     nb_classes= 10
     y_test = tf.keras.utils.to_categorical(y_test, nb_classes)
-    dataset, client_names= create_client(x_train, y_train, num_clients, initial='client')
+    dataset, client_names= create_client(x_train, y_train, num_clients, initial='client_shuffle')
 
 
     # Creating bad clients
@@ -242,7 +242,7 @@ def cifar10_flip_data(client_percent, data_percent, num_clients):    # Get the d
     x_test /= 255
     nb_classes= 10
     y_test = tf.keras.utils.to_categorical(y_test, nb_classes)
-    dataset, client_names= create_client(x_train, y_train, num_clients, initial='client')
+    dataset, client_names= create_client(x_train, y_train, num_clients, initial='client_flip')
 
     # sample_list=[dataset, client_names]
     # file_name = f"../Data/cifar10/Dataset_{num_clients}_cifar10.pkl"
@@ -270,7 +270,7 @@ def cifar10_noise_data(client_percent, data_percent, num_clients):    # Get the 
     x_test /= 255
     nb_classes= 10
     y_test = tf.keras.utils.to_categorical(y_test, nb_classes)
-    dataset, client_names= create_client(x_train, y_train, num_clients, initial='client')
+    dataset, client_names= create_client(x_train, y_train, num_clients, initial='client_noisy')
 
     # sample_list=[dataset, client_names]
     # file_name = f"../Data/cifar10/Dataset_{num_clients}_cifar10.pkl"
@@ -283,11 +283,12 @@ def cifar10_noise_data(client_percent, data_percent, num_clients):    # Get the 
     clients, bad_client = creating_noisy_clients_cifar10(dataset,client_names,client_percent, data_percent)
 
     sample_list=[clients, bad_client, x_test, y_test]
-    file_name = f"../../Data/cifar10/Dataset{client_percent}_{data_percent}_{num_clients}_noise_cifar10.pkl"
-
-    open_file = open(file_name, "wb")
-    pickle.dump(sample_list, open_file)
-    open_file.close()
+    # file_name = f"../../Data/cifar10/Dataset{client_percent}_{data_percent}_{num_clients}_noise_cifar10.pkl"
+    #
+    # open_file = open(file_name, "wb")
+    # pickle.dump(sample_list, open_file)
+    # open_file.close()
+    return sample_list
 
 
 def cifar10_target_data(client_percent, data_percent, num_clients):    # Get the data.

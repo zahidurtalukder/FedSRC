@@ -15,7 +15,7 @@ def mnist_shuffle_data(client_percent, data_percent, num_clients):    # Get the 
     x_test /= 255
     nb_classes= 10
     y_test = tf.keras.utils.to_categorical(y_test, nb_classes)
-    dataset, client_names= create_client(x_train, y_train, num_clients, initial='client')
+    dataset, client_names= create_client(x_train, y_train, num_clients, initial='shuffle_client')
 
 
     # Creating bad clients
@@ -131,7 +131,7 @@ def mnist_flip_data(client_percent, data_percent, num_clients):    # Get the dat
     x_test /= 255
     nb_classes= 10
     y_test = tf.keras.utils.to_categorical(y_test, nb_classes)
-    dataset, client_names= create_client(x_train, y_train, num_clients, initial='client')
+    dataset, client_names= create_client(x_train, y_train, num_clients, initial='flip_client')
 
 
     # Creating bad clients
@@ -178,7 +178,7 @@ def mnist_noise_data(client_percent, data_percent, num_clients):    # Get the da
     x_test /= 255
     nb_classes= 10
     y_test = tf.keras.utils.to_categorical(y_test, nb_classes)
-    dataset, client_names= create_client(x_train, y_train, num_clients, initial='client')
+    dataset, client_names= create_client(x_train, y_train, num_clients, initial='noisy_client')
 
     # Creating bad clients
     clients, bad_client = creating_noisy_clients_mnist(dataset,client_names,client_percent, data_percent)

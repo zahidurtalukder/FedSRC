@@ -78,6 +78,7 @@ for i in range(epochs):
     fileter2_block=[]
 
     randomlist = random.sample(range(0, 300), math.ceil(300 * client_percent))
+    print(randomlist)
     # randomlist= [i for i in range(300)]
     taken_client.append(randomlist)
     total_data = []
