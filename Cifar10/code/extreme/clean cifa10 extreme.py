@@ -1,11 +1,10 @@
-from utils.functions_new import  fed_avg,batch_data_new, get_masked_model_chatgpt, SimpleMLP4, save_file,  open_file, batch_data, set_model_weights, get_cropped_model_chatgpt, group_gradient, group_hessian_new, norm_grad
-from utils.cifar10_data_generator import*
-from utils.other_algo import *
+from utils.functions_new import  fed_avg,batch_data_new, get_masked_model_chatgpt, SimpleMLP, save_file,  open_file, batch_data, set_model_weights, get_cropped_model_chatgpt, group_gradient, group_hessian_new, norm_grad
+from utils.mnist_data_generator import*
 from utils.math_function import weight_scalling_factor,fed_avg_weight,scale_model_weights,sum_scaled_weights,weight_std_dev_median
 import tensorflow as tf
 import numpy as np
 import math
-# from tensorflow.keras import backend as K
+from tensorflow.keras import backend as K
 import random
 import os
 os.environ['PYTHONHASHSEED'] = '0'
@@ -15,9 +14,9 @@ tf.random.set_seed(8)
 
 # file_name = "../Dataset0.3_1_100_flip_mnist.pkl"
 # Dataset= open_file(file_name)
-Dataset_flip= cifar10_noniid_extreme_flip_data(client_percent=.3, data_percent=1,num_clients=100)
-Dataset_shuffle= cifar10_noniid_extreme_shuffle_data(client_percent=.3, data_percent=1,num_clients=100)
-Dataset_noisy= cifar10_noniid_extreme_noise_data(client_percent=.3, data_percent=1,num_clients=100)
+Dataset_flip= mnist_noniid_extreme_flip_data(client_percent=0, data_percent=1,num_clients=100)
+Dataset_shuffle= mnist_noniid_extreme_shuffle_data(client_percent=0, data_percent=1,num_clients=100)
+Dataset_noisy= mnist_noniid_extreme_noise_data(client_percent=0, data_percent=1,num_clients=100)
 #process and batch the training data for each client
 clients= Dataset_flip[0]
 clients2= Dataset_shuffle[0]
@@ -44,16 +43,16 @@ print(client_names)
 loss = 'categorical_crossentropy'
 metrics = ['accuracy']
 epochs = 300
-lr = 0.0001
-alpha= 1
+lr = 0.001
+
 batch_size = 32
 client_percent= .3
-bla = SimpleMLP4
-model = bla.build(1)
+bla = SimpleMLP
+model = bla.build(784,1)
 model.compile(loss=loss,
-            optimizer=tf.keras.optimizers.Adam(
-            learning_rate=lr),
-            metrics=metrics)
+              optimizer=tf.keras.optimizers.Adam(
+                  learning_rate=lr),
+              metrics=metrics)
 global_weight = model.get_weights()
 initial_weight = model.get_weights()
 
@@ -95,7 +94,7 @@ for i in range(epochs):
         model1_train_accuracy.append(hist1.history['accuracy'][-1])
         model1_train_loss.append(hist1.history['loss'][-1])
         model1_weight.append(weight1)
-
+        K.clear_session()
 
     print(model1_train_loss)
 
@@ -123,6 +122,6 @@ for i in range(epochs):
 
     if i%10==0 and i>0:
         sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight, bad_client_flip, bad_client_shuffle, bad_client_flip, taken_client]
-        save_file_name= f'../../data/extreme/clean cifar10 extreme.pkl'
+        save_file_name= f'../../data/extreme/clean Mnist extreme.pkl'
         save_file(save_file_name, sample_list)
 

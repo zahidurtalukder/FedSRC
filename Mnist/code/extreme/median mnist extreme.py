@@ -15,9 +15,9 @@ tf.random.set_seed(8)
 
 # file_name = "../Dataset0.3_1_100_flip_mnist.pkl"
 # Dataset= open_file(file_name)
-Dataset_flip= mnist_noniid_extreme_flip_data(client_percent=.3, data_percent=1,num_clients=100)
-Dataset_shuffle= mnist_noniid_extreme_shuffle_data(client_percent=.3, data_percent=1,num_clients=100)
-Dataset_noisy= mnist_noniid_extreme_noise_data(client_percent=.3, data_percent=1,num_clients=100)
+Dataset_flip= mnist_noniid_flip_data(client_percent=.3, data_percent=1,num_clients=100)
+Dataset_shuffle= mnist_noniid_shuffle_data(client_percent=.3, data_percent=1,num_clients=100)
+Dataset_noisy= mnist_noniid_noise_data(client_percent=.3, data_percent=1,num_clients=100)
 #process and batch the training data for each client
 clients= Dataset_flip[0]
 clients2= Dataset_shuffle[0]
@@ -117,6 +117,6 @@ for i in range(epochs):
 
     if i%10==0 and i>0:
         sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight, bad_client_flip, bad_client_shuffle, bad_client_flip, taken_client]
-        save_file_name= f'../../data/extreme/median Mnist extreme.pkl'
+        save_file_name= f'../../data/noniid/median Mnist noniid.pkl'
         save_file(save_file_name, sample_list)
 

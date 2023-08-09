@@ -38,7 +38,7 @@ plt.plot(np.array(fedasl[0])*100, '--', c='green', linewidth=3.0, zorder=5,  mfc
 plt.plot(np.array(median[0])*100, ':', c='magenta', linewidth=3.0, zorder=2,  mfc='magenta', mec='magenta', mew=1,label='Median')
 plt.plot(np.array(krum[0])*100, '-.', c='cyan', linewidth=3.0, zorder=3,  mfc='cyan', mec='cyan', mew=1,label='Krum')
 plt.plot(np.array(tm[0])*100, ':', c='black', linewidth=3.0, zorder=2,  mfc='black', mec='magenta', mew=1,label='TM')
-plt.plot(np.array(fedavg[0])*100, '-.', c='darkorange', linewidth=3.0, zorder=3,  mfc='orange', mec='orange', mew=1,label='FedAvg')
+plt.plot(np.array(fedavg[0])*100, '-.', c='orange', linewidth=3.0, zorder=3,  mfc='orange', mec='orange', mew=1,label='FedAvg')
 plt.plot(np.array(fedsrc[0])*100, '-', c='blue', linewidth=3.0, zorder=6,  mfc='blue', mec='blue', mew=1,label='FedSRC')
 
 
@@ -46,15 +46,14 @@ plt.plot(np.array(fedsrc[0])*100, '-', c='blue', linewidth=3.0, zorder=6,  mfc='
 plt.xticks(np.arange(0.0, 301, 100))
 plt.xlabel("Rounds of Training", weight='bold')
 plt.ylabel('Accuracy (%)', weight='bold')
-# plt.yticks(np.arange(40, 101, 15))
-# plt.ylim(40, 100)
-plt.xlim(0, 300)
-plt.legend(loc=0,  handlelength=1,fontsize=32, ncol=2,
+plt.yticks(np.arange(40, 101, 15))
+plt.ylim(40, 100)
+plt.legend(loc=4,  handlelength=1,fontsize=32, ncol=2,
                handletextpad=0.2, labelspacing=0.2)
 plt.tight_layout(pad=0.0, h_pad=0.0, w_pad=0.0)
 
 
 
 plt.show
-plt.savefig('../../figure/mnist noniid accuracy.png', bbox_inches='tight')
+# plt.savefig('../../Figures/edge/power point/mnist_shuffle.png', bbox_inches='tight')
 

@@ -104,7 +104,7 @@ for i in range(epochs):
     group1_loss.append(model1_loss)
     group1_train_accuracy.append(model1_train_accuracy)
     group1_train_loss.append(model1_train_loss)
-    global_weight = krum_new(model1_weight, .3)
+    global_weight = krum(model1_weight)
 
     model.set_weights(global_weight)
     model.evaluate(x_test, y_test)
@@ -118,6 +118,6 @@ for i in range(epochs):
     if i%10==0 and i>0:
         global_weight_list.append(global_weight)
         sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight_list,bad_client_shuffle]
-        save_file_name= f'../data/cifar10 krum new flip.pkl'
+        save_file_name= f'../data/cifar10 krum flip.pkl'
         save_file(save_file_name, sample_list)
 
