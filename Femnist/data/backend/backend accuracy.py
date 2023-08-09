@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from numpy import linspace
 from utils.functions_new import save_file, open_file
+import seaborn as sns
 
-plt.rcParams["font.family"] = "palatino linotype"
+plt.rcParams["font.family"] = 'sans serif'
 plt.rcParams.update({'font.size': 35,'font.weight':'bold','pdf.fonttype':42})
 
 
@@ -57,9 +58,9 @@ algorithm5_without_FedSRC = tm[0][-1]*100
 algorithm5_with_FedSRC = tm_src[0][-1]*100
 
 # List of algorithms and their corresponding loss values
-algorithms = ['FedAVG', 'FedASL', 'Krum', 'Median', 'TM']
-without_FedSRC = [algorithm1_without_FedSRC, algorithm2_without_FedSRC, algorithm3_without_FedSRC, algorithm4_without_FedSRC,algorithm5_without_FedSRC]
-with_FedSRC = [algorithm1_with_FedSRC, algorithm2_with_FedSRC, algorithm3_with_FedSRC, algorithm4_with_FedSRC,algorithm5_with_FedSRC]
+algorithms = ['FedAVG', 'Krum', 'Median', 'TM','FedASL',]
+without_FedSRC = [algorithm1_without_FedSRC,  algorithm3_without_FedSRC, algorithm4_without_FedSRC,algorithm5_without_FedSRC,algorithm2_without_FedSRC]
+with_FedSRC = [algorithm1_with_FedSRC, algorithm3_with_FedSRC, algorithm4_with_FedSRC,algorithm5_with_FedSRC,algorithm2_with_FedSRC]
 
 
 fig,ax = plt.subplots(figsize =(10, 8))
@@ -83,4 +84,4 @@ plt.tight_layout(pad=0.0, h_pad=0.0, w_pad=0.0)
 
 plt.tight_layout()
 plt.show()
-plt.savefig('../../figure/backend.png', bbox_inches='tight')
+plt.savefig('../../figure/backend accuracy.png', bbox_inches='tight')

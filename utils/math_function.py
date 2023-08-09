@@ -3,6 +3,14 @@ import numpy as np
 import statistics
 import math
 
+def find_cutoff(values, percent):
+    sorted_values = sorted(values)
+    total_values = len(sorted_values)
+    cutoff_index = int(total_values * (1-percent))
+    cutoff_value = sorted_values[cutoff_index]
+    return cutoff_value
+
+
 def weight_scalling_factor(clients_trn_data, client_name):
     client_names = list(clients_trn_data.keys())
     # get the bs

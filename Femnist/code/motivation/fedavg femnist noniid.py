@@ -39,7 +39,7 @@ client_names = list(clients_batched.keys())
 
 loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 metrics = ['accuracy']
-epochs = 300
+epochs = 3
 lr = 0.001
 alpha= 1
 beta=1
@@ -75,8 +75,8 @@ for i in range(epochs):
     fileter1_block=[]
     fileter2_block=[]
 
-    randomlist = random.sample(range(0, num_clients*3), math.ceil(num_clients*3* client_percent))
-    # randomlist= [i for i in range(300)]
+    # randomlist = random.sample(range(0, num_clients*3), math.ceil(num_clients*3* client_percent))
+    randomlist= [i for i in range(600)]
     taken_client.append(randomlist)
     total_data = []
 
@@ -118,8 +118,8 @@ for i in range(epochs):
     global_accuracy.append(score[1])
     global_loss.append(score[0])
 
-    if i%10==0 and i>0:
-        sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight, bad_client_flip, bad_client_shuffle, bad_client_flip, taken_client]
-        save_file_name= f'../../data/noniid/fedavg femnist noniid.pkl'
-        save_file(save_file_name, sample_list)
+
+sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight, bad_client_flip, bad_client_shuffle, bad_client_noise, taken_client]
+save_file_name= f'../../data/motivation/fedavg femnist noniid.pkl'
+save_file(save_file_name, sample_list)
 

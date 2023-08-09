@@ -9,7 +9,7 @@ os.environ['PYTHONHASHSEED'] = '0'
 np.random.seed(37)
 random.seed(5)
 tf.random.set_seed(8)
-
+import math
 import random
 
 import numpy as np
@@ -117,7 +117,7 @@ test_dataset = tf.data.Dataset.from_tensor_slices(
 # Define the learning rate
 lr = 0.001
 
-
+client_percent=.3
 epochs=150
 group_num=5
 q= 1
@@ -161,8 +161,8 @@ for i in range(epochs):
     fileter1_block=[]
     fileter2_block=[]
 
-    # randomlist = random.sample(range(0, 300), math.ceil(300 * client_percent))
-    randomlist= [i for i in range(len(clients))]
+    randomlist = random.sample(range(0, len(clients)), math.ceil(len(clients) * client_percent))
+    # randomlist= [i for i in range(len(clients))]
     taken_client.append(randomlist)
     total_data = []
     if i<150:

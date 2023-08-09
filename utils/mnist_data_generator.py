@@ -15,7 +15,7 @@ def mnist_shuffle_data(client_percent, data_percent, num_clients):    # Get the 
     x_test /= 255
     nb_classes= 10
     y_test = tf.keras.utils.to_categorical(y_test, nb_classes)
-    dataset, client_names= create_client(x_train, y_train, num_clients, initial='client')
+    dataset, client_names= create_client(x_train, y_train, num_clients, initial='shuffle_client')
 
 
     # Creating bad clients
@@ -131,7 +131,7 @@ def mnist_flip_data(client_percent, data_percent, num_clients):    # Get the dat
     x_test /= 255
     nb_classes= 10
     y_test = tf.keras.utils.to_categorical(y_test, nb_classes)
-    dataset, client_names= create_client(x_train, y_train, num_clients, initial='client')
+    dataset, client_names= create_client(x_train, y_train, num_clients, initial='flip_client')
 
 
     # Creating bad clients
@@ -178,7 +178,7 @@ def mnist_noise_data(client_percent, data_percent, num_clients):    # Get the da
     x_test /= 255
     nb_classes= 10
     y_test = tf.keras.utils.to_categorical(y_test, nb_classes)
-    dataset, client_names= create_client(x_train, y_train, num_clients, initial='client')
+    dataset, client_names= create_client(x_train, y_train, num_clients, initial='noisy_client')
 
     # Creating bad clients
     clients, bad_client = creating_noisy_clients_mnist(dataset,client_names,client_percent, data_percent)
@@ -225,7 +225,7 @@ def create_non_iid_extreme_mnist(x_train, y_train, num_client, percent,initial):
     client_names = ['{}_{}'.format(initial, i + 1) for i in range(num_client)]
     return clients, client_names
 
-def cifar10_noniid_extreme_shuffle_data(client_percent, data_percent, num_clients):    # Get the data.
+def mnist_noniid_extreme_shuffle_data(client_percent, data_percent, num_clients):    # Get the data.
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
     x_train = x_train.reshape(60000, 784)
     x_test = x_test.reshape(10000, 784)
@@ -249,7 +249,7 @@ def cifar10_noniid_extreme_shuffle_data(client_percent, data_percent, num_client
     # open_file.close()
     return sample_list
 
-def cifar10_noniid_extreme_flip_data(client_percent, data_percent, num_clients):    # Get the data.
+def mnist_noniid_extreme_flip_data(client_percent, data_percent, num_clients):    # Get the data.
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
     x_train = x_train.reshape(60000, 784)
     x_test = x_test.reshape(10000, 784)
@@ -273,7 +273,7 @@ def cifar10_noniid_extreme_flip_data(client_percent, data_percent, num_clients):
     # open_file.close()
     return sample_list
 
-def cifar10_noniid_extreme_noise_data(client_percent, data_percent, num_clients):    # Get the data.
+def mnist_noniid_extreme_noise_data(client_percent, data_percent, num_clients):    # Get the data.
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
     x_train = x_train.reshape(60000, 784)
     x_test = x_test.reshape(10000, 784)

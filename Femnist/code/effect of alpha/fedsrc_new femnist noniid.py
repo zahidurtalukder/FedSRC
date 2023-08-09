@@ -1,6 +1,6 @@
 from utils.functions_new import *
 from utils.other_algo import *
-from utils.math_function import weight_scalling_factor,fed_avg_weight,scale_model_weights,sum_scaled_weights,weight_std_dev_median
+from utils.math_function import *
 import tensorflow as tf
 import numpy as np
 from utils.client_creation import *
@@ -41,8 +41,7 @@ loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 metrics = ['accuracy']
 epochs = 300
 lr = 0.001
-alpha= .1
-beta=1
+alpha= .3
 batch_size = 32
 client_percent= .3
 bla = SimpleMLP3
@@ -105,14 +104,14 @@ for i in range(epochs):
             local_score = model.evaluate(clients_batched[client_names[a]], verbose=0)
             model1_accuracy.append(local_score[1])
             model1_loss.append(local_score[0])
-        global_median, global_standard_dev = np.median(model1_loss), np.std(model1_loss)
-        print(f'mean is {global_median} and Standard deviation {global_standard_dev}')
+        cutoff= find_cutoff(model1_loss,alpha)
+        print(f'cutoff is {cutoff} ')
 
         for a in randomlist:
             model.set_weights(global_weight)
             local_score = model.evaluate(clients_batched[client_names[a]], verbose=0)
 
-            if global_median-global_standard_dev*alpha <=local_score[0]<=global_median +global_standard_dev*alpha:
+            if local_score[0]<=cutoff:
                 hist1 = model.fit(clients_batched[client_names[a]], epochs=1, verbose=1)
                 weight1 = np.array(model.get_weights())
                 model1_train_accuracy.append(hist1.history['accuracy'][-1])
