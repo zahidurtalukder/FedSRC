@@ -9,9 +9,7 @@ This repository is the official implementation of FedSRC-
 
 >📋 Federated Learning (FL) has emerged as a prominent privacy-
 preserving decentralized paradigm for collaborative machine
-learning across many devices. However, FL suffers from per-
-formance degradation in the global model due to heterogene-
-ity in clients’ locally generated data. Some prior studies ad-
+learning across many devices. However, FL suffers from performance degradation in the global model due to heterogeneity in clients’ locally generated data. Some prior studies ad-
 dress this issue by limiting or even discarding certain clients’
 contributions to the global model, resulting in unnecessary
 computation and communication for the discarded clients.
@@ -19,16 +17,14 @@ Alternatively, selectively choosing clients to participate in FL
 may avoid such resource waste. But, such active client se-
 lection requires client-level profiling that violates privacy. In
 this paper, we present a novel FL approach, called FedSRC:
-Federated Learning with Self-Regulating Clients, that can
+Federated Learning with Self-Regulating Clients, can
 save clients’ resources while preserving their anonymity. In
-FedSRC, clients can determine themselves if their local train-
+FedSRC, clients can determine if their local train-
 ing is favorable to the global model and whether they should
 participate in an FL round using a lightweight checkpoint
-based on their test loss on the global model. Through com-
-prehensive evaluations using four datasets, we show that
+based on their test loss on the global model. Through comprehensive evaluations using four datasets, we show that
 FedSRC can improve global model performance, all the
-while reducing communication costs by up to 30% and com-
-putation costs by 55%.
+while reducing communication costs by up to 30% and computation costs by 55%.
 
 ## Requirements
 
@@ -38,10 +34,8 @@ To install requirements:
 pip install -r requirements.txt
 ```
 >📋  Getting Dataset Directly
-
-- You can directly download the Dataset for MNIST [MNIST IID](https://drive.google.com/file/d/1KWLSAWqeChXsKWoufc85gQ8xaG6ocUWt/view?usp=sharing), [MNIST Non-IID](https://drive.google.com/file/d/1oOcLdDUq7dAvWMWTAO9j0-ddBEesS9hh/view?usp=sharing), [MNIST Non-IID Extreme](https://drive.google.com/file/d/1ty8wQOHasDtAW1lQilI_bvq_BfbSJIPK/view?usp=sharing).
-- You can directly download the Dataset for CIFAR10 [CIFAR10 IID](https://drive.google.com/file/d/1vw-axxdsMDsczZAab7LO6PC8_Av4jr_g/view?usp=sharing), [CIFAR10 Non-IID](https://drive.google.com/file/d/1qRlxFQrNV_ksCavDAoW8_cMFkDAnA4hr/view?usp=sharing), [CIFAR10 Non-IID Extreme](https://drive.google.com/file/d/1qRlxFQrNV_ksCavDAoW8_cMFkDAnA4hr/view?usp=sharing).
 - You can directly download the Dataset for FEMNIST [FEMNIST TRAIN](https://drive.google.com/file/d/1dhwHcwHvgHGraG-OMXzVA4WrpiNLoqAV/view?usp=sharing), [FEMNIST TEST](https://drive.google.com/file/d/1Oe3yEPa2TruLkEOTLsZtipZjERBs-a1M/view?usp=sharing)
+- For other datasets, those are processed during training and downloaded online.
 
 Keep the dataset in the same directory of the dataset name.
 
