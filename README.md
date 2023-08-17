@@ -3,9 +3,10 @@
 # FedSRC: Computation and Communication Efficient Federated Learning with Self-Regulating Clients
 
 This repository is the official implementation of FedSRC-
-<p align="center" width="100%">
-    <img width="66%" src="images/architecture.PNG">
+<p align="center">
+    <img src="images/architecture.PNG" width="50%" alt="Image">
 </p>
+
 
 >📋 Federated Learning (FL) has emerged as a prominent privacy-
 preserving decentralized paradigm for collaborative machine
