@@ -75,7 +75,7 @@ You can download trained models' weight parameters here to generate the result w
 
 Our model achieves the following performance on :
 <p align="center" width="33%">
-    <img width="80%" src="Femnist/figure/femnist noniid accuracy.png">
+    <img width="33%" src="Femnist/figure/femnist noniid accuracy.png">
 </p>
 
 >📋  This is the main result of our paper. This shows that with proper tuning of q and qms, we can get more balanced performance accross clients from all the groups with different hardware capabilities. 
