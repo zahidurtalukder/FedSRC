@@ -43,40 +43,13 @@ Keep the dataset in the same directory of the dataset name.
 
 To train the model(s) in the paper, navigate to the directory and run this command:
 
-MNIST IID train
+
+CIFAR10 Non-IID training for FedSRC
 ```
-python train mnist iid.py q qm1 qm2 qm3 qm4 qm5
-```
-MNIST Non-IID train
-```
-python train mnist noniid.py q qm1 qm2 qm3 qm4 qm5
-```
-MNIST Non-IID Extreme train
-```
-python train mnist noniid extreme.py q qm1 qm2 qm3 qm4 qm5
-```
-CIFAR10 IID train
-```
-python train cifar iid.py q qm1 qm2 qm3 qm4 qm5
-```
-CIFAR10 Non-IID train
-```
-python train cifar noniid.py q qm1 qm2 qm3 qm4 qm5
-```
-CIFAR10 Non-IID Extreme train
-```
-python train cifar noniid extreme.py q qm1 qm2 qm3 qm4 qm5
-```
-FEMNIST train
-```
-python train femnist.py q qm1 qm2 qm3 qm4 qm5
-```
-SHAKESPEARE train
-```
-python train shakespeare.py q qm1 qm2 qm3 qm4 qm5
+python fedsrc cifar10 noniid.py
 ```
 
->📋  This train the model with particualar value of q and qms. After training the train and test losses and accuracies are automatically save in the data folder for future evaluation. You can tune q and qms value to get your desired model performance.
+>📋 You can control the number of clients, the percentage of bad clients, and the percentage of clients blockig from the code for any algorithms. The code for different algorithms is in different files.
 
 ## Evaluation
 
