@@ -76,9 +76,12 @@ You can download trained models' weight parameters here to generate the result w
 
 Our model achieves the following performance on :
 Our model achieves the following performance on :
-<p align="center">
-    <img src="Femnist/figure/femnist_noniid_accuracy.png" width="50%" alt="Image">
-</p>
+<div align="center">
+    <img src="Femnist/figure/femnist noniid accuracy.png" width="24%" alt="Image">
+    <img src="Mnist/figure/mnist noniid accuracy.png" width="24%" alt="Image">
+    <img src="Cifar10/figure/cifar10 noniid accuracy.png" width="24%" alt="Image">
+    <img src="Shakespeare/figure/shakespeare noniid accuracy.png" width="24%" alt="Image">
+</div>
 
 
 
