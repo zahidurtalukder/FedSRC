@@ -4,7 +4,7 @@
 
 This repository is the official implementation of FairHeteroFL-
 <p align="center" width="100%">
-    <img width="66%" src="images/Architecture.jpg">
+    <img width="66%" src="images/architecture.PNG">
 </p>
 
 >📋 Federated Learning (FL) has emerged as a prominent privacy-
