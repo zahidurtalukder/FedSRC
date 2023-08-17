@@ -74,7 +74,7 @@ You can download trained models' weight parameters here to generate the result w
 ## Results
 
 Our model achieves the following performance on :
-<p align="center" width="100%">
+<p align="center" width="33%">
     <img width="80%" src="Femnist/figure/femnist noniid accuracy.png">
 </p>
 
