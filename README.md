@@ -53,13 +53,13 @@ python fedsrc cifar10 noniid.py
 
 ## Evaluation
 
-To evaluate the groupwise performance, run the evaluate.py located in data for every dataset:
+Data is saved as the data section with the same directory name at code section. You can evaluate the model performances from there using code like-:
 
 ```eval
-python evaluate.py "file_name"
+python cifar10 noniid accuracy.py
 ```
 
->📋  The file name should include extension ".pkl". This produces the groupwise mean and variance of the test loss for a particular value of q and qms.
+>📋  You can asses both the accuracy, and loss of the clients as well as the global server along with model weights and other information from the data section.
 ## Pre-trained Models
 
 You can download pretrained models here:
