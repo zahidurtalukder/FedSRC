@@ -2,7 +2,7 @@
 
 # FedSRC: Computation and Communication Efficient Federated Learning with Self-Regulating Clients
 
-This repository is the official implementation of FairHeteroFL-
+This repository is the official implementation of FedSRC-
 <p align="center" width="100%">
     <img width="66%" src="images/architecture.PNG">
 </p>
