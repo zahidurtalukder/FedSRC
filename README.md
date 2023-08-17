@@ -85,7 +85,7 @@ Our model achieves the following performance on :
 
 
 
->📋  This is the main result of our paper. This shows that with proper tuning of q and qms, we can get more balanced performance accross clients from all the groups with different hardware capabilities. 
+>📋  This is the main result of our paper. This shows that our FedSRC is better than existing  state-of-the-art algorithms in the presence of corrupted clients.
 
 
 ## Contributing
