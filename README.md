@@ -61,16 +61,6 @@ python cifar10 noniid accuracy.py
 ```
 
 >📋  You can asses both the accuracy, and loss of the clients as well as the global server along with model weights and other information from the data section.
-## Pre-trained Models
-
-You can download trained models' weight parameters here to generate the result without training. The weight file is in .pkl format, read the file and set the model weights:
-
-- [MNIST](/Mnist/pretrain%20model/noniid) trained on HeteroFL and FairHeteroFL can be found here. 
-- [CIFAR10](/Cifar10/pretrain%20model/noniid) trained on HeteroFL and FairHeteroFL can be found here. 
-- [FEMNIST](/Femnist/pretrain%20model/noniid) trained on HeteroFL and FairHeteroFL can be found here.
-- [SHAKESPEARE](/Shakespeare/pretrain%20model/noniid) trained on HeteroFL and FairHeteroFL can be found here.
-
->📋 These models were  used to generate the main result in the paper.
 
 ## Results
 
