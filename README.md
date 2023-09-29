@@ -52,16 +52,6 @@ python fedsrc cifar10 noniid.py
 
 >📋 You can control the number of clients, the percentage of bad clients, and the percentage of clients blockig from the code for any algorithms. The code for different algorithms is in different files.
 
-## Evaluation
-
-Data is saved as the data section with the same directory name at code section. You can evaluate the model performances from there using code like-:
-
-```eval
-python cifar10 noniid accuracy.py
-```
-
->📋  You can asses both the accuracy, and loss of the clients as well as the global server along with model weights and other information from the data section.
-
 ## Results
 
 Our model achieves the following performance on :
