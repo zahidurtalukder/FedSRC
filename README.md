@@ -4,7 +4,7 @@
 
 This repository is the official implementation of FedSRC-
 <p align="center">
-    <img src="images/architecture.PNG" width="50%" alt="Image">
+    <img src="images/Architecture.png" width="50%" alt="Image">
 </p>
 
 
