@@ -52,6 +52,29 @@ python fedsrc cifar10 noniid.py
 
 >📋 You can control the number of clients, the percentage of bad clients, and the percentage of clients blockig from the code for any algorithms. The code for different algorithms is in different files.
 
+## Evaluation
+
+Data is saved as the data section with the same directory name at code section. You can evaluate the model performances from there using code like-:
+
+```eval
+python cifar10 noniid accuracy.py
+```
+
+>📋  You can asses both the accuracy, and loss of the clients as well as the global server along with model weights and other information from the data section.
+>
+## Pre-trained Models
+
+You can download trained models' weight parameters here to generate the result without training. The weight file is in .pkl format, read the file and set the model weights:
+
+- [MNIST](/Mnist/pretrain%20model/noniid) trained on FedSRC can be found here. 
+- [CIFAR10](/Cifar10/pretrain%20model/noniid) trained on FedSRC can be found here. 
+- [FEMNIST](/Femnist/pretrain%20model/noniid) trained on FedSRC can be found here.
+- [SHAKESPEARE](/Shakespeare/pretrain%20model/noniid) trained on FedSRC can be found here.
+
+>📋 These models were  used to generate the main result in the paper.
+
+
+
 ## Results
 
 Our model achieves the following performance on :
