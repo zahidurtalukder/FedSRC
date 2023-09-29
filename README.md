@@ -1,6 +1,6 @@
 
 
-# FedSRC: Computation and Communication Efficient Federated Learning with Self-Regulating Clients
+# FedSRC: Federated Learning with Self-Regulating Clients
 
 This repository is the official implementation of FedSRC-
 <p align="center">
