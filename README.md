@@ -3,10 +3,6 @@
 # FedSRC: Federated Learning with Self-Regulating Clients
 
 This repository is the official implementation of FedSRC-
-<p align="center">
-    <img src="images/Architecture.png" width="50%" alt="Image">
-</p>
-
 
 >📋 Federated Learning (FL) has emerged as a prominent privacy-
 preserving decentralized paradigm for collaborative machine
