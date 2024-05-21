@@ -4,24 +4,8 @@
 
 This repository is the official implementation of FedSRC-
 
->📋 Federated Learning (FL) has emerged as a prominent privacy-
-preserving decentralized paradigm for collaborative machine
-learning across many devices. However, FL suffers from performance degradation in the global model due to heterogeneity in clients’ locally generated data. Some prior studies ad-
-dress this issue by limiting or even discarding certain clients’
-contributions to the global model, resulting in unnecessary
-computation and communication for the discarded clients.
-Alternatively, selectively choosing clients to participate in FL
-may avoid such resource waste. But, such active client se-
-lection requires client-level profiling that violates privacy. In
-this paper, we present a novel FL approach, called FedSRC:
-Federated Learning with Self-Regulating Clients, can
-save clients’ resources while preserving their anonymity. In
-FedSRC, clients can determine if their local train-
-ing is favorable to the global model and whether they should
-participate in an FL round using a lightweight checkpoint
-based on their test loss on the global model. Through comprehensive evaluations using four datasets, we show that
-FedSRC can improve global model performance, all the
-while reducing communication costs by up to 30% and computation costs by 55%.
+>📋 Federated Learning (FL) suffers from performance degradation in the global model due to the quality and reliability of clients’ locally generated data. Some prior studies address this issue by limiting or even discarding certain clients’ contributions to the global model, resulting in unnecessary computation and communication for the discarded clients. Alternatively, a selective choice of clients to participate in
+FL may avoid this resource waste. However, such active client selection requires client-level profiling that violates privacy. In this paper, we present a novel FL approach, called FedSRC: Federated Learning with Self-Regulating Clients, that can save clients’ resources while preserving their anonymity. In FedSRC, clients can determine if their local training is favorable to the global model and whether they should participate in an FL round using a lightweight checkpoint based on a local inference loss on the global model. Through comprehensive evaluations using four datasets, we show that FedSRC can reduce communication costs by up to 30% and computation costs by 55%.
 
 ## Requirements
 
