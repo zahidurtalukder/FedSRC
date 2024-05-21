@@ -121,6 +121,8 @@ epochs=150
 group_num=5
 client_percent =.3
 alpha = .3
+beta= 1
+cut= 2
 L=1/lr
 bla = SimpleMLP5
 model = bla.build(1)
@@ -160,7 +162,7 @@ for i in range(epochs):
     # randomlist= [i for i in range(300)]
     taken_client.append(randomlist)
     total_data = []
-    if i<2:
+    if i < 2:
         for a in randomlist:
             data_points = 1
             total_data.append(data_points)
@@ -173,31 +175,18 @@ for i in range(epochs):
             model1_train_accuracy.append(hist1.history['accuracy'][-1])
             model1_train_loss.append(hist1.history['loss'][-1])
             model1_weight.append(weight1)
+        cutoff = statistics.median(model1_train_loss) + statistics.stdev(model1_train_loss) * beta
+        print(f'cutoff is {cutoff} in epocchs {i}')
 
 
 
     else:
-        for a in randomlist:
-            model.set_weights(global_weight)
-            local_score =  model.evaluate(train_datasets[a], verbose=0)
-            model1_accuracy.append(local_score[1])
-            model1_loss.append(local_score[0])
-        cutoff= find_cutoff(model1_loss,alpha)
-        print(f'cutoff is {cutoff} ')
-
-        for a in randomlist:
-            model.set_weights(global_weight)
-            local_score = model.evaluate(train_datasets[a], verbose=0)
-            model1_accuracy.append(local_score[1])
-            model1_loss.append(local_score[0])
-        global_median, global_standard_dev = np.median(model1_loss), np.std(model1_loss)
-        print(f'mean is {global_median} and Standard deviation {global_standard_dev}')
 
         for a in randomlist:
             model.set_weights(global_weight)
             local_score = model.evaluate(train_datasets[a], verbose=0)
 
-            if local_score[0]<=cutoff:
+            if local_score[0] <= cutoff:
                 hist1 = model.fit(train_datasets[a], epochs=1, verbose=1)
                 weight1 = np.array(model.get_weights())
                 model1_train_accuracy.append(hist1.history['accuracy'][-1])
@@ -210,13 +199,14 @@ for i in range(epochs):
             else:
                 fileter1_block.append(a)
                 print('blocked at filter1')
-                fileter1_block.append(a)
+        if statistics.stdev(model1_train_loss) * beta > cut:
+            cutoff = statistics.median(model1_train_loss) + statistics.stdev(model1_train_loss) * beta
+            print(f'cutoff is {cutoff} in epocchs {i}')
+        else:
+            cutoff = statistics.median(model1_train_loss) + cut
+            print(f'cutoff is {cutoff} in epocchs {i}')
 
     blocked_client.append(fileter1_block)
-
-
-
-    print(model1_train_loss)
 
     group1_accuracy.append(model1_accuracy)
     group1_loss.append(model1_loss)
@@ -241,6 +231,6 @@ for i in range(epochs):
     if i%10==0 and i>0:
         global_weight_list.append(global_weight)
         sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight_list, sla, taken_client ,blocked_client]
-        save_file_name= f'../../data/noniid/fedsrc new shakespeare noniid.pkl'
+        save_file_name= f'../../data/noniid/fedsrc newest shakespeare noniid.pkl'
         save_file(save_file_name, sample_list)
 
