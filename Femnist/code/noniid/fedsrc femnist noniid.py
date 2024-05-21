@@ -5,6 +5,7 @@ import tensorflow as tf
 import numpy as np
 from utils.client_creation import *
 import math
+import statistics
 # from tensorflow.keras import backend as K
 import random
 import os
@@ -42,6 +43,8 @@ metrics = ['accuracy']
 epochs = 300
 lr = 0.001
 alpha= .3
+beta= 1
+cut= .5
 batch_size = 32
 client_percent= .3
 bla = SimpleMLP3
@@ -94,18 +97,12 @@ for i in range(epochs):
             model1_train_accuracy.append(hist1.history['accuracy'][-1])
             model1_train_loss.append(hist1.history['loss'][-1])
             model1_weight.append(weight1)
+        cutoff = statistics.median(model1_train_loss) + statistics.stdev(model1_train_loss) * beta
+        print(f'cutoff is {cutoff} in epocchs {i}')
 
 
 
     else:
-
-        for a in randomlist:
-            model.set_weights(global_weight)
-            local_score = model.evaluate(clients_batched[client_names[a]], verbose=0)
-            model1_accuracy.append(local_score[1])
-            model1_loss.append(local_score[0])
-        cutoff= find_cutoff(model1_loss,alpha)
-        print(f'cutoff is {cutoff} ')
 
         for a in randomlist:
             model.set_weights(global_weight)
@@ -124,11 +121,14 @@ for i in range(epochs):
             else:
                 fileter1_block.append(a)
                 print('blocked at filter1')
-                fileter1_block.append(a)
+        if statistics.stdev(model1_train_loss) * beta>cut:
+            cutoff = statistics.median(model1_train_loss) + statistics.stdev(model1_train_loss) * beta
+            print(f'cutoff is {cutoff} in epocchs {i}')
+        else:
+            cutoff = statistics.median(model1_train_loss) + cut
+            print(f'cutoff is {cutoff} in epocchs {i}')
 
     blocked_client.append(fileter1_block)
-
-    print(model1_train_loss)
 
     group1_accuracy.append(model1_accuracy)
     group1_loss.append(model1_loss)
@@ -155,6 +155,6 @@ for i in range(epochs):
         global_weight_list.append(global_weight)
         sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight_list, bad_client_flip,
                        bad_client_shuffle, bad_client_noise, taken_client,blocked_client]
-        save_file_name= f'../../data/noniid/fedsrc femnist noniid.pkl'
+        save_file_name= f'../../data/backend newest/fedsrc newest fedavg femnist noniid.pkl'
         save_file(save_file_name, sample_list)
 
