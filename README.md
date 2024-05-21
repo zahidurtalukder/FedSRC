@@ -86,7 +86,7 @@ Our model achieves the following performance on :
 
 >📋  This is the main result of our paper. This shows that our FedSRC is better than existing  state-of-the-art algorithms in the presence of corrupted clients.
 
-## Comparison of the accuracy of \ouralg with SOTA algorithms
+## Comparison of the accuracy of FedSRC with SOTA algorithms
 
 | Algorithms  | MNIST IID | MNIST NonIID | MNIST Extreme | CIFAR IID | CIFAR NonIID | CIFAR Extreme | FEMNIST | Shakespeare |
 |-------------|------------|--------------|---------------|-----------|--------------|---------------|---------|-------------|
