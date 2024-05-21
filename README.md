@@ -1,6 +1,6 @@
 
 
-# FedSRC: Federated Learning with Self-Regulating Clients
+# Self-Regulating Clients for Efficient Federated Learning Under Data Quality Issues
 
 This repository is the official implementation of FedSRC-
 
