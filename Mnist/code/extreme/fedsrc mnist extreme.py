@@ -3,8 +3,10 @@ from utils.mnist_data_generator import*
 from utils.math_function import *
 import tensorflow as tf
 import numpy as np
+from utils.client_creation import *
 import math
-from tensorflow.keras import backend as K
+import statistics
+# from tensorflow.keras import backend as K
 import random
 import os
 os.environ['PYTHONHASHSEED'] = '0'
@@ -14,9 +16,9 @@ tf.random.set_seed(8)
 
 # file_name = "../Dataset0.3_1_100_flip_mnist.pkl"
 # Dataset= open_file(file_name)
-Dataset_flip= mnist_noniid_extreme_flip_data(client_percent=.3, data_percent=1,num_clients=100)
-Dataset_shuffle= mnist_noniid_extreme_shuffle_data(client_percent=.3, data_percent=1,num_clients=100)
-Dataset_noisy= mnist_noniid_extreme_noise_data(client_percent=.3, data_percent=1,num_clients=100)
+Dataset_flip= mnist_noniid_extreme_flip_data(client_percent=0.3, data_percent=1,num_clients=100)
+Dataset_shuffle= mnist_noniid_extreme_shuffle_data(client_percent=0.3, data_percent=1,num_clients=100)
+Dataset_noisy= mnist_noniid_extreme_noise_data(client_percent=0.3, data_percent=1,num_clients=100)
 #process and batch the training data for each client
 clients= Dataset_flip[0]
 clients2= Dataset_shuffle[0]
@@ -42,10 +44,13 @@ print(client_names)
 
 loss = 'categorical_crossentropy'
 metrics = ['accuracy']
+
 epochs = 300
 lr = 0.001
 alpha= .3
-
+beta= 1
+cut= .5
+probability= .2
 batch_size = 32
 client_percent= .3
 bla = SimpleMLP
@@ -98,18 +103,12 @@ for i in range(epochs):
             model1_train_accuracy.append(hist1.history['accuracy'][-1])
             model1_train_loss.append(hist1.history['loss'][-1])
             model1_weight.append(weight1)
+        cutoff = statistics.median(model1_train_loss) + statistics.stdev(model1_train_loss) * beta
+        print(f'cutoff is {cutoff} in epocchs {i}')
 
 
 
     else:
-
-        for a in randomlist:
-            model.set_weights(global_weight)
-            local_score = model.evaluate(clients_batched[client_names[a]], verbose=0)
-            model1_accuracy.append(local_score[1])
-            model1_loss.append(local_score[0])
-        cutoff= find_cutoff(model1_loss,alpha)
-        print(f'cutoff is {cutoff} ')
 
         for a in randomlist:
             model.set_weights(global_weight)
@@ -126,13 +125,28 @@ for i in range(epochs):
 
 
             else:
-                fileter1_block.append(a)
-                print('blocked at filter1')
-                fileter1_block.append(a)
+                if random.random()<= probability:
+                    print("training even loss greater than threshold")
+                    hist1 = model.fit(clients_batched[client_names[a]], epochs=1, verbose=1)
+                    weight1 = np.array(model.get_weights())
+                    model1_train_accuracy.append(hist1.history['accuracy'][-1])
+                    model1_train_loss.append(hist1.history['loss'][-1])
+                    model1_weight.append(weight1)
+                    data_points = len(clients_batched[client_names[a]]) * batch_size
+                    total_data.append(data_points)
+                else:
+
+                    fileter1_block.append(a)
+                    print('blocked at filter1')
+                    fileter1_block.append(a)
+        if statistics.stdev(model1_train_loss) * beta>cut:
+            cutoff = statistics.median(model1_train_loss) + statistics.stdev(model1_train_loss) * beta
+            print(f'cutoff is {cutoff} in epocchs {i}')
+        else:
+            cutoff = statistics.median(model1_train_loss) + cut
+            print(f'cutoff is {cutoff} in epocchs {i}')
 
     blocked_client.append(fileter1_block)
-
-    print(model1_train_loss)
 
     group1_accuracy.append(model1_accuracy)
     group1_loss.append(model1_loss)
@@ -157,8 +171,7 @@ for i in range(epochs):
 
     if i%10==0 and i>0:
         global_weight_list.append(global_weight)
-        sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight_list, bad_client_flip,
-                       bad_client_shuffle, bad_client_noisy, taken_client,blocked_client]
-        save_file_name= f'../../data/extreme/fedsrc new Mnist extreme.pkl'
+        sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight_list, taken_client,blocked_client]
+        save_file_name= f'../../data/extreme/fedsrc newest Mnist extreme.pkl'
         save_file(save_file_name, sample_list)
 
