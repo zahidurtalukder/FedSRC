@@ -86,6 +86,18 @@ Our model achieves the following performance on :
 
 >📋  This is the main result of our paper. This shows that our FedSRC is better than existing  state-of-the-art algorithms in the presence of corrupted clients.
 
+## Comparison of the accuracy of \ouralg with SOTA algorithms
+
+| Algorithms  | MNIST IID | MNIST NonIID | MNIST Extreme | CIFAR IID | CIFAR NonIID | CIFAR Extreme | FEMNIST | Shakespeare |
+|-------------|------------|--------------|---------------|-----------|--------------|---------------|---------|-------------|
+| FedASL     | 0.973      | 0.971        | 0.942         | 0.556     | 0.556        | 0.488         | 0.746   | 0.511       |
+| FedAvg     | 0.971      | 0.969        | 0.936         | 0.548     | 0.552        | 0.491         | 0.749   | 0.499       |
+| Krum       | 0.969      | 0.963        | 0.891         | 0.534     | 0.411        | 0.339         | 0.742   | 0.357       |
+| Medians    | 0.972      | 0.970        | 0.929         | 0.524     | 0.504        | 0.275         | 0.742   | 0.417       |
+| Trimmed mean         | 0.974      | 0.974        | 0.957         | 0.533     | 0.529        | 0.411         | 0.743   | 0.449       |
+| FedSRC     | **0.981**  | **0.979**    | **0.971**     | **0.596** | **0.579**    | **0.492**     | **0.791**| **0.521**   |
+
+
 
 ## Contributing
 
