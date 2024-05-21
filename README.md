@@ -74,7 +74,6 @@ You can download trained models' weight parameters here to generate the result w
 ## Results
 
 Our model achieves the following performance on :
-Our model achieves the following performance on :
 <div align="center">
     <img src="Femnist/figure/femnist noniid accuracy.png" width="24%" alt="Image">
     <img src="Mnist/figure/mnist noniid accuracy.png" width="24%" alt="Image">
@@ -109,8 +108,21 @@ Our model achieves the following performance on :
 | TM             | 0.116         | 0.115        | 0.229         | 1.395        | 1.530        | 1.775         | 1.071         | 1.895         |
 |FedSrc          | **0.064**    | **0.072**   | **0.119**    | **1.172**   | **1.233**   | **1.495**     | **0.731**    | **1.607**    |
 
+## Computation and Communication Savings
 
+Our model saves both computation and communication cost in presence of bad clients :
+<div align="center">
+    <img src="Femnist/figure/computation_savings_bar.png" width="24%" alt="Image">
+    <img src="Femnist/figure/communication_savings_bar.png" width="24%" alt="Image">
+</div>
 
+## Working in the client side with existing algorithms
+
+Our model can work in the backend with existing algorithms and saves computation and communication cost and improves their performance as well:
+<div align="center">
+    <img src="Femnist/figure/backend accuracy.png" width="24%" alt="Image">
+    <img src="Femnist/figure/backend_loss.png" width="24%" alt="Image">
+</div>
 
 ## Contributing
 
