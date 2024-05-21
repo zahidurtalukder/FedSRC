@@ -46,6 +46,8 @@ metrics = ['accuracy']
 epochs = 300
 lr = 0.0001
 alpha= .3
+beta= .5
+cut= .5
 
 batch_size = 32
 client_percent= .3
@@ -86,7 +88,7 @@ for i in range(epochs):
     # randomlist= [i for i in range(300)]
     taken_client.append(randomlist)
     total_data = []
-    if i<2:
+    if i < 2:
         for a in randomlist:
             data_points = len(clients_batched[client_names[a]]) * batch_size
             total_data.append(data_points)
@@ -99,6 +101,8 @@ for i in range(epochs):
             model1_train_accuracy.append(hist1.history['accuracy'][-1])
             model1_train_loss.append(hist1.history['loss'][-1])
             model1_weight.append(weight1)
+        cutoff = statistics.median(model1_train_loss) + statistics.stdev(model1_train_loss) * beta
+        print(f'cutoff is {cutoff} in epocchs {i}')
 
 
 
@@ -107,16 +111,8 @@ for i in range(epochs):
         for a in randomlist:
             model.set_weights(global_weight)
             local_score = model.evaluate(clients_batched[client_names[a]], verbose=0)
-            model1_accuracy.append(local_score[1])
-            model1_loss.append(local_score[0])
-        cutoff= find_cutoff(model1_loss,alpha)
-        print(f'cutoff is {cutoff} ')
 
-        for a in randomlist:
-            model.set_weights(global_weight)
-            local_score = model.evaluate(clients_batched[client_names[a]], verbose=0)
-
-            if local_score[0]<=cutoff:
+            if local_score[0] <= cutoff:
                 hist1 = model.fit(clients_batched[client_names[a]], epochs=1, verbose=1)
                 weight1 = np.array(model.get_weights())
                 model1_train_accuracy.append(hist1.history['accuracy'][-1])
@@ -129,11 +125,14 @@ for i in range(epochs):
             else:
                 fileter1_block.append(a)
                 print('blocked at filter1')
-                fileter1_block.append(a)
+        if statistics.stdev(model1_train_loss) * beta > cut:
+            cutoff = statistics.median(model1_train_loss) + statistics.stdev(model1_train_loss) * beta
+            print(f'cutoff is {cutoff} in epocchs {i}')
+        else:
+            cutoff = statistics.median(model1_train_loss) + cut
+            print(f'cutoff is {cutoff} in epocchs {i}')
 
     blocked_client.append(fileter1_block)
-
-    print(model1_train_loss)
 
     group1_accuracy.append(model1_accuracy)
     group1_loss.append(model1_loss)
@@ -160,6 +159,6 @@ for i in range(epochs):
         global_weight_list.append(global_weight)
         sample_list = [global_accuracy, global_loss, group1_train_accuracy, group1_train_loss, group1_accuracy, group1_loss, global_weight_list,
                        bad_client_flip, bad_client_shuffle, bad_client_flip, taken_client, blocked_client]
-        save_file_name= f'../../data/iid/fedsrc new cifar10 iid.pkl'
+        save_file_name= f'../../data/iid/fedsrc newest cifar10 iid.pkl'
         save_file(save_file_name, sample_list)
 
