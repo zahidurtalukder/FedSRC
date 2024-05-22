@@ -49,7 +49,7 @@ You can download trained models' weight parameters here to generate the result w
 - [MNIST](/Mnist/pretrain%20model/noniid) trained on FedSRC and other algorithms can be found here. 
 - [CIFAR10](/Cifar10/pretrain%20model/noniid) trained on FedSRC and other algorithms can be found here. 
 - [FEMNIST](/Femnist/pretrain%20model/noniid) trained on FedSRC and other algorithms can be found here.
-- [SHAKESPEARE](/Shakespeare/pretrain%20model/noniid) trained on FedSRC and other algorithms can be found here.
+- [SHAKESPEARE](https://drive.google.com/drive/folders/10jlTg8FhzvWduFYh7t0fMNKcLTmhvMH8?usp=sharing) trained on FedSRC and other algorithms can be found here.
 
 >📋 These models were  used to generate the main result in the paper.
 
