@@ -587,3 +587,12 @@ def RHI(unique_labels, counts, max_class=10, gamma=0.1):
     ge=(-bla)/np.log(len(counts))
     
     return gamma * hi + (1-gamma) * (1-ge)
+
+def RHI_cal(data_shard, max_class,gamma):
+    client_data, labels = zip(*data_shard)
+    unique_labels, counts = np.unique(labels, return_counts=True)
+    rhi_value = RHI(unique_labels, counts, max_class, gamma)
+    # Check if the result is NaN, and return 0 if it is
+    if np.isnan(rhi_value):
+        return 0
+    return rhi_value
