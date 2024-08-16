@@ -4,9 +4,8 @@
 
 This repository is the official implementation of FedSRC-
 
->📋 Federated Learning (FL) suffers from performance degradation in the global model due to the quality and reliability of clients’ locally generated data. Some prior studies address this issue by limiting or even discarding certain clients’ contributions to the global model, resulting in unnecessary computation and communication for the discarded clients. Alternatively, a selective choice of clients to participate in
-FL may avoid this resource waste. However, such active client selection requires client-level profiling that violates privacy. In this paper, we present a novel FL approach, called FedSRC: Federated Learning with Self-Regulating Clients, that can save clients’ resources while preserving their anonymity. In FedSRC, clients can determine if their local training is favorable to the global model and whether they should participate in an FL round using a lightweight checkpoint based on a local inference loss on the global model. Through comprehensive evaluations using four datasets, we show that FedSRC can reduce communication costs by up to 30% and computation costs by 55%.
-
+>📋 Federated Learning (FL) suffers from performance degradation in the global model due to the quality and reliability of clients' locally generated data. Some prior studies address this by limiting or discarding certain clients' contributions to the global model, resulting in unnecessary computation and communication for the discarded clients. While active client selection may avoid this resource waste, it requires client-level profiling that violates privacy. In this paper, we present a novel FL approach, called FedSRC: Federated Learning with Self-Regulating Clients, that can save clients' computation and communication resources while preserving their anonymity. In FedSRC, clients determine if their local training is favorable to the global model and whether they should participate in an FL round using a lightweight checkpoint using the local test loss on the global model and refined heterogeneity index (RHI).
+Through comprehensive evaluations using four datasets, we show that FedSRC can reduce communication costs by up to 30\% and computation costs by 55\%.
 ## Requirements
 
 To install requirements:
