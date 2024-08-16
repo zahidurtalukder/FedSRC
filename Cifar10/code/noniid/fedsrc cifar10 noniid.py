@@ -1,4 +1,4 @@
-from utils.functions_new import  fed_avg,batch_data_new, get_masked_model_chatgpt, SimpleMLP4, save_file,  open_file, batch_data, set_model_weights, get_cropped_model_chatgpt, group_gradient, group_hessian_new, norm_grad
+from utils.functions_new import*  
 from utils.cifar10_data_generator import*
 from utils.math_function import *
 import tensorflow as tf
@@ -25,8 +25,11 @@ clients.update(clients2)
 clients.update(clients3)
 clients_batched = dict()
 clients_batched_test = dict()
+RHI_list=[]
 for (client_name, data) in clients.items():
     clients_batched[client_name],clients_batched_test[client_name]= batch_data_new(data)
+    print(f'rhi {RHI_cal(data,max_class=10,gamma=0.7)}')
+    RHI_list.append(RHI_cal(data,max_class=10,gamma=0.7))
 
 #process and batch the test set
 bad_client_flip= Dataset_flip[1]
@@ -47,6 +50,8 @@ lr = 0.0001
 alpha= .3
 beta= .5
 cut= 1
+cutoff= float('inf')
+std=0
 batch_size = 32
 client_percent= .3
 bla = SimpleMLP4
@@ -99,7 +104,7 @@ for i in range(epochs):
             model1_train_accuracy.append(hist1.history['accuracy'][-1])
             model1_train_loss.append(hist1.history['loss'][-1])
             model1_weight.append(weight1)
-        cutoff = statistics.median(model1_train_loss) + statistics.stdev(model1_train_loss) * beta
+        cutoff = statistics.median(model1_train_loss) + statistics.stdev(model1_train_loss) * (beta-RHI_list[0])
         print(f'cutoff is {cutoff} in epocchs {i}')
 
 
@@ -110,7 +115,7 @@ for i in range(epochs):
             model.set_weights(global_weight)
             local_score = model.evaluate(clients_batched[client_names[a]], verbose=0)
 
-            if local_score[0] <= cutoff:
+            if local_score[0] <= cutoff - (RHI_list[a] * std):
                 hist1 = model.fit(clients_batched[client_names[a]], epochs=1, verbose=1)
                 weight1 = np.array(model.get_weights())
                 model1_train_accuracy.append(hist1.history['accuracy'][-1])
@@ -123,6 +128,7 @@ for i in range(epochs):
             else:
                 fileter1_block.append(a)
                 print('blocked at filter1')
+        std=statistics.stdev(model1_train_loss)
         if statistics.stdev(model1_train_loss) * beta > cut:
             cutoff = statistics.median(model1_train_loss) + statistics.stdev(model1_train_loss) * beta
             print(f'cutoff is {cutoff} in epocchs {i}')
