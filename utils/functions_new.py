@@ -575,3 +575,15 @@ class SimpleMLP5:
         model.add(GRU(int(1024*rate), return_sequences=True, stateful=True, recurrent_initializer='glorot_uniform'))
         model.add(Dense(86))
         return model
+
+def RHI(unique_labels, counts, max_class=10, gamma=0.1):
+    sum_count = np.sum(counts)
+    hi= 1-((len(unique_labels)-1)/(max_class-1))
+    bla = 0
+    for i in range(len(counts)):
+        prob = counts[i] / sum_count
+        if prob > 0:  # Avoid log(0)
+            bla += prob * np.log(prob)
+    ge=(-bla)/np.log(len(counts))
+    
+    return gamma * hi + (1-gamma) * (1-ge)
