@@ -1,7 +1,6 @@
 
 
-# Self-Regulating Clients for Efficient Federated Learning Under Data Quality Issues
-
+# Empowering Clients: Self-Adaptive Federated Learning for Data Quality Challenges
 This repository is the official implementation of FedSRC-
 
 >📋 Federated Learning (FL) suffers from performance degradation in the global model due to the quality and reliability of clients' locally generated data. Some prior studies address this by limiting or discarding certain clients' contributions to the global model, resulting in unnecessary computation and communication for the discarded clients. While active client selection may avoid this resource waste, it requires client-level profiling that violates privacy. In this paper, we present a novel FL approach, called FedSRC: Federated Learning with Self-Regulating Clients, that can save clients' computation and communication resources while preserving their anonymity. In FedSRC, clients determine if their local training is favorable to the global model and whether they should participate in an FL round using a lightweight checkpoint using the local test loss on the global model and refined heterogeneity index (RHI).
